@@ -116,8 +116,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    SetWindowPos(hWnd, NULL, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOZORDER | SWP_FRAMECHANGED);
    // 窗口置顶
    SetWindowPos(hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
-   // 设置一个每100毫秒触发一次的定时器
-   SetTimer(hWnd, 1, 100, NULL); 
+   // 设置一个每50毫秒触发一次的定时器
+   SetTimer(hWnd, 1, 50, NULL); 
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
 
