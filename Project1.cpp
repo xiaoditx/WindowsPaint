@@ -13,6 +13,8 @@ WCHAR szTitle[MAX_LOADSTRING];                  // 标题栏文本
 WCHAR szWindowClass[MAX_LOADSTRING];            // 主窗口类名
 HWND  hWnd;                                     //HWND
 POINT MousePos;                                 //鼠标位置
+bool  CNC;                                      //不能点
+bool  IsKeyDown[256];                           //防止重复判定
 
 // 此代码模块中包含的函数的前向声明:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -118,6 +120,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    SetWindowPos(hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
    // 设置一个每50毫秒触发一次的定时器
    SetTimer(hWnd, 1, 50, NULL); 
+   // 不可以按下鼠标
+   CNC = true;
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
 
@@ -175,7 +179,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         SelectObject(mdc, hBrush);
 
 
-        Rectangle(mdc, MousePos.x-5, MousePos.y-5, MousePos.x+5, MousePos.y+5);
+        if(CNC) Rectangle(mdc, MousePos.x-5, MousePos.y-5, MousePos.x+5, MousePos.y+5);
 
         BitBlt(hdc, 0, 0, 1980, 1080, mdc, 0, 0, SRCCOPY);
 
@@ -191,6 +195,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_TIMER:
         InvalidateRect(hWnd, NULL, TRUE); // 使整个窗口无效
         GetCursorPos(&MousePos);          // 实时获取鼠标位置
+
+        if (!IsKeyDown[VK_MENU] && !IsKeyDown[VK_F2]&&KEY_DOWN(VK_MENU)&&KEY_DOWN(VK_F2)) {//Alt+F2取消/重启
+            IsKeyDown[VK_MENU] = IsKeyDown[VK_F2] = true;
+
+            CNC = (bool)((CNC + 1) % 2);
+        }
+        else if (IsKeyDown[VK_MENU] && IsKeyDown[VK_F2] && !KEY_DOWN(VK_MENU) && !KEY_DOWN(VK_F2)) {
+            IsKeyDown[VK_MENU] = IsKeyDown[VK_F2] = false;//防止多次判断
+        }
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
     }
