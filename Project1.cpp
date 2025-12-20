@@ -117,7 +117,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    // 窗口置顶
    SetWindowPos(hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
    // 设置一个每100毫秒触发一次的定时器
-   SetTimer(hWnd, 1, 10, NULL); 
+   SetTimer(hWnd, 1, 100, NULL); 
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
 
@@ -160,41 +160,27 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hWnd, &ps);
 
-        // 创建与窗口DC兼容的内存DC
-        HDC memDC = CreateCompatibleDC(hdc);
+        // 1.创建兼容缓冲区
+        HDC mdc = CreateCompatibleDC(hdc);   // 创建兼容DC
+        HBITMAP bmp = CreateCompatibleBitmap(hdc, 1980, 1080);   // 创建兼容位图画布
+        SelectObject(mdc, bmp);    // 选入
 
-        // 创建一个与窗口大小相同的位图
-        HBITMAP memBmp = CreateCompatibleBitmap(hdc, 500, 100);
-
-        // 将位图选入内存DC
-        HBITMAP oldBmp = (HBITMAP)SelectObject(memDC, memBmp);
-
-        // 在内存DC中绘制图形
-        SetBkColor(hdc, RGB(0,0,0));
+        // 绘制图形
+        //SetBkColor(hdc, RGB(0,0,0));
         // 设置画笔和笔刷
         HPEN hPen = CreatePen(PS_SOLID, 2, RGB(0, 0, 0)); // 透明边框
         HBRUSH hBrush = CreateSolidBrush(RGB(255, 255, 255)); // 白色填充
 
-        SelectObject(hdc, hPen);
-        SelectObject(hdc, hBrush);
+        SelectObject(mdc, hPen);
+        SelectObject(mdc, hBrush);
 
-        //在此处放置更多HDC绘图
-        Rectangle(hdc, MousePos.x-5, MousePos.y-5, MousePos.x+5, MousePos.y+5);
 
-        // 使用UpdateLayeredWindow函数将内存DC中的内容复制到窗口DC中
-        POINT ptSrc = { 0, 0 };
-        SIZE size = { 500, 100 };
-        BLENDFUNCTION blend = { AC_SRC_OVER, 0, 255, AC_SRC_ALPHA };
-        POINT ptDst = { 0, 0 };
+        Rectangle(mdc, MousePos.x-5, MousePos.y-5, MousePos.x+5, MousePos.y+5);
 
-        UpdateLayeredWindow(hWnd, hdc, &ptDst, &size, memDC, &ptSrc, 0, &blend, ULW_ALPHA);
-
-        // 恢复原来的位图
-        SelectObject(memDC, oldBmp);
+        BitBlt(hdc, 0, 0, 1980, 1080, mdc, 0, 0, SRCCOPY);
 
         // 释放内存DC和位图
-        DeleteDC(memDC);
-        DeleteObject(memBmp);
+        DeleteDC(mdc);
 
         EndPaint(hWnd, &ps);
         }
