@@ -176,29 +176,49 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hWnd, &ps);
 
-        // 1.创建兼容缓冲区
-        HDC mdc = CreateCompatibleDC(hdc);   // 创建兼容DC
-        HBITMAP bmp = CreateCompatibleBitmap(hdc, 1980, 1080);   // 创建兼容位图画布
-        HGDIOBJ hOldSel = SelectObject(mdc, bmp);    // 选入
+        // 1. 获取实际客户区大小
+        RECT rcClient;
+        GetClientRect(hWnd, &rcClient);
+        int width = rcClient.right - rcClient.left;
+        int height = rcClient.bottom - rcClient.top;
 
-        // 绘制图形
-        //SetBkColor(hdc, RGB(0,0,0));
-        // 设置画笔和笔刷
-        HPEN hPen = CreatePen(PS_SOLID, 2, RGB(0, 0, 0)); // 透明边框
-        HBRUSH hBrush = CreateSolidBrush(Colorful); // 彩色填充
+        // 2. 创建兼容缓冲区
+        HDC mdc = CreateCompatibleDC(hdc);
+        if (!mdc) break;
 
-        SelectObject(mdc, hPen);
-        SelectObject(mdc, hBrush);
+        HBITMAP bmp = CreateCompatibleBitmap(hdc, width, height);
+
+        HGDIOBJ hOldSel = SelectObject(mdc, bmp);
+
+        // 4. 创建绘图资源
+        HPEN hPen = CreatePen(PS_SOLID, 2, RGB(0, 0, 0));
+        HBRUSH hBrush = CreateSolidBrush(Colorful);
+
+        // 保存旧对象并选入新的
+        HGDIOBJ hOldPen = SelectObject(mdc, hPen);
+        HGDIOBJ hOldBrush = SelectObject(mdc, hBrush);
+
+        // 5. 绘制图形
         RectGoToNew(MouseWindowRect);
-        if (CWR) DrawRect(mdc, NowRect);//大面积靠后
-        if (CNC) Rectangle(mdc, MousePos.x-5, MousePos.y-5, MousePos.x+5, MousePos.y+5);
+        if (CWR) DrawRect(mdc, NowRect);
+        if (CNC) Rectangle(mdc, MousePos.x - 5, MousePos.y - 5, MousePos.x + 5, MousePos.y + 5);
         if (CWT) DrawTextAZX(mdc, Colorful, RGB(0, 0, 0), title, MousePos.x + 5, MousePos.y + 5);
         if (DML) DrawMouseLine(mdc);
 
-        BitBlt(hdc, 0, 0, 1980, 1080, mdc, 0, 0, SRCCOPY);
-        // 释放内存DC和位图
-        SelectObject(mdc, hOldSel);
-        DeleteDC(mdc);
+        // 6. 恢复旧对象并删除资源
+        SelectObject(mdc, hOldBrush);
+        SelectObject(mdc, hOldPen);
+        DeleteObject(hBrush);      // 删除笔刷
+        DeleteObject(hPen);        // 删除画笔
+
+        // 7. 复制到屏幕
+        BitBlt(hdc, 0, 0, width, height, mdc, 0, 0, SRCCOPY);
+
+        // 8. 清理内存DC
+        SelectObject(mdc, hOldSel);  // 恢复原来的位图
+        DeleteObject(bmp);           // 删除位图
+        DeleteDC(mdc);               // 删除内存DC
+
         EndPaint(hWnd, &ps);
         }
         break;
@@ -295,6 +315,8 @@ void DrawRect(HDC hdc, RECT Rect) {
     hBrush = CreateSolidBrush(Colorful); // 彩色填充
     SelectObject(hdc, hPen);
     SelectObject(hdc, hBrush);
+    DeleteObject(hPen);
+    DeleteObject(hBrush);
     return;
 }
 void RectGoToNew(RECT NewRect) {
@@ -324,5 +346,7 @@ void DrawMouseLine(HDC hdc) {
     hBrush = CreateSolidBrush(Colorful); // 彩色填充
     SelectObject(hdc, hPen);
     SelectObject(hdc, hBrush);
+    DeleteObject(hPen);
+    DeleteObject(hBrush);
     return;
 }
