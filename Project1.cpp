@@ -370,6 +370,14 @@ void FastMousePos(HDC hdc, POINT point) {
     HGDIOBJ hOldPen = SelectObject(hdc, hPen);
     HGDIOBJ hOldBrush = SelectObject(hdc, hBrush);
 
+    MoveToEx(hdc, point.x - 7, point.y - 7, NULL);
+    LineTo(hdc, point.x - 3, point.y - 3);
+    MoveToEx(hdc, point.x + 7, point.y + 7, NULL);
+    LineTo(hdc, point.x + 3, point.y + 3);
+    MoveToEx(hdc, point.x + 7, point.y - 7, NULL);
+    LineTo(hdc, point.x + 3, point.y - 3);
+    MoveToEx(hdc, point.x - 7, point.y + 7, NULL);
+    LineTo(hdc, point.x - 3, point.y + 3);
     Ellipse(hdc, point.x - 5, point.y - 5, point.x + 5, point.y + 5);
 
     SelectObject(hdc, hOldPen);
