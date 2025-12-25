@@ -26,7 +26,8 @@ COLORREF Colorful;
 RECT  MouseWindowRect;                          // 鼠标窗口边框
 RECT NowRect;                                   // 显示边框
 POINT FastMouse[256]; INT_PTR FMP;              // 连点器
-LONG Bottom, Top, Left, Right,width=1280,height=720;               // 单击
+LONG width = 1280, height = 720;
+LONG Bottom, Top, Left, Right, b1;              // 这里是一些临时的变量
 
 //  此代码模块中包含的函数的前向声明:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -285,16 +286,25 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             for (int i = 0; i < FMP; i++)
                 SimulateLeftClick(FastMouse[i].x, FastMouse[i].y);//Alt+:连点
         if (KEY_DOWN(VK_LBUTTON)) {
-            NFT(&Bottom, (LONG)0, (double)0.5);
-            NFT(&Top, width, (double)0.5);
-            NFT(&Left, (LONG)0, (double)0.5);
-            NFT(&Right, height, (double)0.5);
+            NFT(&Bottom, (LONG)0, (double)0.3);
+            NFT(&Top, width, (double)0.3);
+            NFT(&Left, (LONG)0, (double)0.3);
+            NFT(&Right, height, (double)0.3);
+            NFT(&b1, 10, (double)0.2);
+        }
+        else if (KEY_DOWN(VK_RBUTTON)) {
+            NFT(&Bottom, width, (double)0.3);
+            NFT(&Top, (LONG)0, (double)0.3);
+            NFT(&Left, height, (double)0.3);
+            NFT(&Right, (LONG)0, (double)0.3);
+            NFT(&b1, -10, (double)0.2);
         }
         else {
             NFT(&Bottom, MousePos.x, (double)0.5);
             NFT(&Top, MousePos.x, (double)0.5);
             NFT(&Left, MousePos.y, (double)0.5);
             NFT(&Right, MousePos.y, (double)0.5);
+            NFT(&b1, 0, (double)0.5);
         }
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
@@ -359,15 +369,14 @@ void DrawMouseLine(HDC hdc) {
     HGDIOBJ hOldPen = SelectObject(hdc, hPen);
     HGDIOBJ hOldBrush = SelectObject(hdc, hBrush);
 
-    bool tmp = KEY_DOWN(VK_LBUTTON);
     MoveToEx(hdc, 0, Left, NULL);
-    LineTo(hdc, MousePos.x - 10, MousePos.y-tmp*10);
-    MoveToEx(hdc, MousePos.x+10, MousePos.y+ tmp * 10, NULL);
+    LineTo(hdc, MousePos.x - 10, MousePos.y-b1);
+    MoveToEx(hdc, MousePos.x+10, MousePos.y+ b1, NULL);
     LineTo(hdc, width, Right);
 
     MoveToEx(hdc, Top, 0, NULL);
-    LineTo(hdc, MousePos.x+ tmp * 10, MousePos.y-10);
-    MoveToEx(hdc, MousePos.x- tmp * 10, MousePos.y+10, NULL);
+    LineTo(hdc, MousePos.x+ b1, MousePos.y-10);
+    MoveToEx(hdc, MousePos.x- b1, MousePos.y+10, NULL);
     LineTo(hdc, Bottom, height);
 
     SelectObject(hdc, hOldPen);
