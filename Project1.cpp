@@ -18,6 +18,7 @@ bool  CNC=false;                                // 不能点
 bool  CWT=true;                                 // 窗口名显示
 bool  CWR = true;                               // 鼠标窗口边框
 bool  DML = true;                               // 定位鼠标线
+bool  VPR = false;                              // 录制模式
 bool  IsKeyDown[256];                           // 防止重复判定
 HWND  MouseHwnd;                                // 鼠标所在窗口的HWND
 wchar_t  title[1024];                           // 所在窗口的标题
@@ -203,6 +204,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         // 5. 绘制图形
         RectGoToNew(MouseWindowRect);
+        if (VPR) {
+            hBrush = CreateSolidBrush(RGB(0,177,64));
+            SelectObject(mdc, hBrush);
+
+            Rectangle(mdc, 0, 0, width, height);
+
+            hBrush = CreateSolidBrush(Colorful);
+        }
         if (CWR) DrawRect(mdc, NowRect);
         if (CNC) Rectangle(mdc, MousePos.x - 5, MousePos.y - 5, MousePos.x + 5, MousePos.y + 5);
         if (CWT) DrawTextAZX(mdc, Colorful, RGB(0, 0, 0), title, MousePos.x + 5, MousePos.y + 5); 
@@ -278,6 +287,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         }
         else if (IsKeyDown[VK_MENU] && IsKeyDown[VK_OEM_4] && !KEY_DOWN(VK_MENU) && !KEY_DOWN(VK_OEM_4)) {
             IsKeyDown[VK_MENU] = IsKeyDown[VK_OEM_4] = false;//防止多次判断
+        }
+
+        if (!IsKeyDown[VK_MENU] && !IsKeyDown[0x50] && KEY_DOWN(VK_MENU) && KEY_DOWN(0x50)) {//Alt+P取消/重启
+            IsKeyDown[VK_MENU] = IsKeyDown[0x50] = true;
+            VPR = (bool)((VPR + 1) % 2);
+        }
+        else if (IsKeyDown[VK_MENU] && IsKeyDown[0x50] && !KEY_DOWN(VK_MENU) && !KEY_DOWN(0x50)) {
+            IsKeyDown[VK_MENU] = IsKeyDown[0x50] = false;//防止多次判断
         }
 
         if (KEY_DOWN(VK_MENU) && KEY_DOWN(VK_OEM_6)) FMP = 0;//Alt+]清除
