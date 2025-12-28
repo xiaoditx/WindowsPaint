@@ -7,6 +7,12 @@
 
 #define MAX_LOADSTRING 100
 #define KEY_DOWN(VK_NONAME) ((GetAsyncKeyState(VK_NONAME) & 0x8000) ? 1 : 0)
+const int N = 1e6 + 10;
+
+struct DoKeyDown {
+    int Down_Key[26],TickDownNum;
+    int Downx, Downy;
+}DoKeyThing[N];//按键录制
 
 // 全局变量:
 HINSTANCE hInst;                                // 当前实例
@@ -19,6 +25,7 @@ bool  CWT=true;                                 // 窗口名显示
 bool  CWR = true;                               // 鼠标窗口边框
 bool  DML = true;                               // 定位鼠标线
 bool  VPR = false;                              // 录制模式
+bool  SKV = false, DKV = false;                 // 录制键盘模式
 bool  IsKeyDown[256];                           // 防止重复判定
 HWND  MouseHwnd;                                // 鼠标所在窗口的HWND
 wchar_t  title[1024];                           // 所在窗口的标题
@@ -26,7 +33,7 @@ INT_PTR ColorTime;                              // 时间
 COLORREF Colorful;
 RECT  MouseWindowRect;                          // 鼠标窗口边框
 RECT NowRect;                                   // 显示边框
-POINT FastMouse[256]; INT_PTR FMP;              // 连点器
+POINT FastMouse[256]; INT_PTR FMP, VKN;         // 连点器和键盘录制
 LONG width = 1280, height = 720;
 LONG Bottom, Top, Left, Right, b1;              // 这里是一些临时的变量
 
@@ -40,8 +47,10 @@ void                DrawRect(HDC hdc, RECT Rect);
 void                RectGoToNew(RECT NewRect);
 void                DrawMouseLine(HDC hdc);
 void                FastMousePos(HDC hdc, POINT point);
-void                SimulateLeftClick(int x, int y);
+void                SimulateLeftClick(int x, int y, bool leftorright);
 void                NFT(LONG *Old, LONG ToNew, double Tnum);
+void                AddKeyThing();
+void                DoKeyThings();
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -216,6 +225,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         if (CNC) Rectangle(mdc, MousePos.x - 5, MousePos.y - 5, MousePos.x + 5, MousePos.y + 5);
         if (CWT) DrawTextAZX(mdc, Colorful, RGB(0, 0, 0), title, MousePos.x + 5, MousePos.y + 5); 
         if (DML) DrawMouseLine(mdc);
+        if (SKV) DrawTextAZX(mdc, Colorful, RGB(0, 0, 0), L"正在录制键盘", MousePos.x + 5, MousePos.y - 5);
         for (int i = 0; i < FMP; i++) FastMousePos(mdc, FastMouse[i]);
 
         // 6. 恢复旧对象并删除资源
@@ -299,9 +309,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         if (KEY_DOWN(VK_MENU) && KEY_DOWN(VK_OEM_6)) FMP = 0;//Alt+]清除
 
-        if (KEY_DOWN(VK_MENU) && KEY_DOWN(VK_OEM_1))
-            for (int i = 0; i < FMP; i++)
-                SimulateLeftClick(FastMouse[i].x, FastMouse[i].y);//Alt+:连点
+        if (KEY_DOWN(VK_MENU) && KEY_DOWN(VK_OEM_COMMA)) {
+            for (int i = 0; i < FMP; i++) {
+                SimulateLeftClick(FastMouse[i].x, FastMouse[i].y, false);//Alt+<左键 连点
+            }
+        }
+            
+                
+        if (KEY_DOWN(VK_MENU) && KEY_DOWN(VK_OEM_PERIOD)) {
+            for (int i = 0; i < FMP; i++) {
+                SimulateLeftClick(FastMouse[i].x, FastMouse[i].y, true);//Alt+>右键 连点右键
+            }
+        }
+
         if (KEY_DOWN(VK_LBUTTON)) {
             NFT(&Bottom, (LONG)0, (double)0.3);
             NFT(&Top, width, (double)0.3);
@@ -322,6 +342,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             NFT(&Left, MousePos.y, (double)0.5);
             NFT(&Right, MousePos.y, (double)0.5);
             NFT(&b1, 0, (double)0.5);
+        }
+
+        if (KEY_DOWN(VK_MENU) && KEY_DOWN(VK_ESCAPE)) {
+            DestroyWindow(hWnd);
+            break;
         }
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
@@ -425,15 +450,46 @@ void FastMousePos(HDC hdc, POINT point) {
     return;
 }
 
-void SimulateLeftClick(int x, int y) {
+void SimulateLeftClick(int x, int y, bool leftorright) {//false left/true right
     // 设置鼠标位置
     SetCursorPos(x, y);
-    // 模拟左键按下和释放
-    mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
-    mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+    if (!leftorright) {
+        mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+        mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+    }
+    else {
+        mouse_event(MOUSEEVENTF_RIGHTDOWN, 0, 0, 0, 0);
+        mouse_event(MOUSEEVENTF_RIGHTUP, 0, 0, 0, 0);
+    }
 }
 
 void NFT(LONG *Old, LONG ToNew, double Tnum) {
     *Old = *Old + (LONG)((ToNew - *Old) * Tnum);
     return;
+}
+
+void AddKeyThing() {
+    bool tmp = true;
+    for (int i = 1; i <= 255; i++) {
+        if (KEY_DOWN(i)&&i!=VK_MENU) {
+            VKN+=tmp;
+            DoKeyThing[VKN].Down_Key[DoKeyThing[VKN].TickDownNum++] = i;
+            DoKeyThing[VKN].Downx = MousePos.x;
+            DoKeyThing[VKN].Downy = MousePos.y;
+            tmp = false;
+        }
+    }
+}
+
+void DoKeyThings() {
+    for (int i = 0; i < VKN; i++) {
+        for (int j = 0; j < DoKeyThing[i].TickDownNum; j++) {
+            int Thing = DoKeyThing[i].Down_Key[j];
+            SetCursorPos(DoKeyThing[i].Downx, DoKeyThing[i].Downy);
+            /*if (Thing == MOUSEEVENTF_LEFTDOWN || Thing == MOUSEEVENTF_LEFTUP || Thing == MOUSEEVENTF_RIGHTDOWN || Thing == MOUSEEVENTF_RIGHTUP) {
+                mouse_event(Thing, 0, 0, 0, 0);
+            }
+            else */keybd_event(Thing, 0, 0, 0);
+        }
+    }
 }
