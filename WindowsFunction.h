@@ -4,7 +4,7 @@
 #pragma once
 #include "framework.h"
 #include "Project1.h"
-#include <graphics.h>
+// #include <graphics.h>
 #include "Function.h"
 #include "Paint.h"
 #include "Tick.h"
@@ -21,7 +21,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 //
 ATOM MyRegisterClass(HINSTANCE hInstance)
 {
-    WNDCLASSEXW wcex;
+    WNDCLASSEXA wcex;
 
     wcex.cbSize = sizeof(WNDCLASSEX);
 
@@ -30,14 +30,14 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     wcex.cbClsExtra = 0;
     wcex.cbWndExtra = 0;
     wcex.hInstance = hInstance;
-    wcex.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_PROJECT1));
+    wcex.hIcon = LoadIcon(NULL, IDI_APPLICATION);
     wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
     wcex.hbrBackground = CreateSolidBrush(RGB(0, 0, 0));
-    wcex.lpszMenuName = MAKEINTRESOURCEW(IDC_PROJECT1);
+    wcex.lpszMenuName = NULL;
     wcex.lpszClassName = szWindowClass;
-    wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
+    wcex.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
 
-    return RegisterClassExW(&wcex);
+    return RegisterClassExA(&wcex);
 }
 
 //
@@ -54,7 +54,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
     hInst = hInstance; // 将实例句柄存储在全局变量中
 
-    hWnd = CreateWindowExW(WS_EX_LAYERED, szWindowClass, szTitle, WS_POPUP,
+    hWnd = CreateWindowExA(WS_EX_LAYERED, szWindowClass, szTitle, WS_POPUP,
                            CW_USEDEFAULT, CW_USEDEFAULT, 1920, 1080, NULL, NULL, hInstance, NULL);
 
     if (!hWnd)
@@ -109,23 +109,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
-    case WM_COMMAND:
-    {
-        int wmId = LOWORD(wParam);
-        // 分析菜单选择:
-        switch (wmId)
-        {
-        case IDM_ABOUT:
-            DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
-            break;
-        case IDM_EXIT:
-            DestroyWindow(hWnd);
-            break;
-        default:
-            return DefWindowProc(hWnd, message, wParam, lParam);
-        }
-    }
-    break;
     case WM_PAINT:
         Paint();
         break;

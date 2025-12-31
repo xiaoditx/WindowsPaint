@@ -21,7 +21,7 @@ void Paint()
 
     // 4. 创建绘图资源
     HPEN hPen = CreatePen(PS_SOLID, 2, RGB(0, 0, 0));
-    HBRUSH hBrush = CreateSolidBrush(Colorful);
+    HBRUSH hBrush = CreateSolidBrush(RGB(0, 255, 0));
 
     // 保存旧对象并选入新的
     HGDIOBJ hOldPen = SelectObject(mdc, hPen);
@@ -36,18 +36,18 @@ void Paint()
 
         Rectangle(mdc, 0, 0, width, height);
 
-        hBrush = CreateSolidBrush(Colorful);
+        hBrush = CreateSolidBrush(RGB(0, 255, 0));
     }
     if (CWR)
         DrawRect(mdc, NowRect);
     if (CNC)
         Rectangle(mdc, MousePos.x - 5, MousePos.y - 5, MousePos.x + 5, MousePos.y + 5);
     if (CWT)
-        DrawTextAZX(mdc, Colorful, RGB(0, 0, 0), title, MousePos.x + 5, MousePos.y + 5);
+        DrawTextAZX(mdc, RGB(0, 255, 0), RGB(0, 0, 0), title, MousePos.x + 5, MousePos.y + 5);
     if (DML)
         DrawMouseLine(mdc);
     if (SKV)
-        DrawTextAZX(mdc, Colorful, RGB(0, 0, 0), L"正在录制键盘", MousePos.x + 5, MousePos.y - 5);
+        DrawTextAZX(mdc, Colorful, RGB(0, 0, 0), "正在录制键盘", MousePos.x + 5, MousePos.y - 5);
     for (int i = 0; i < FMP; i++)
         FastMousePos(mdc, FastMouse[i]);
 

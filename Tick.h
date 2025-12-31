@@ -7,11 +7,11 @@ void Tick()
     InvalidateRect(hWnd, NULL, TRUE); // 使整个窗口无效,从而触发绘画
 
     GetCursorPos(&MousePos);
-    ColorTime += 3;
-    ColorTime %= 360;
-    Colorful = HSLtoRGB(ColorTime, 1, 0.5f);
+    // ColorTime += 3;
+    // ColorTime %= 360;
+    // Colorful = HSLtoRGB(ColorTime, 1, 0.5f);
     MouseHwnd = WindowFromPoint(MousePos);
-    GetWindowTextW(MouseHwnd, title, 512);
+    GetWindowTextA(MouseHwnd, title, 512);
     GetWindowRect(MouseHwnd, &MouseWindowRect); // 获取功能相关数据
 
     if (!IsKeyDown[VK_MENU] && !IsKeyDown[VK_F2] && KEY_DOWN(VK_MENU) && KEY_DOWN(VK_F2))

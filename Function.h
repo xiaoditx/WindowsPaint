@@ -5,7 +5,7 @@
 #pragma once
 #include "framework.h"
 #include "Project1.h"
-#include <graphics.h>
+// #include <graphics.h>
 #include "Variable.h"
 
 void NFT(LONG *Old, LONG ToNew, double Tnum)
@@ -14,13 +14,13 @@ void NFT(LONG *Old, LONG ToNew, double Tnum)
     return;
 }
 
-void DrawTextAZX(HDC hdc, COLORREF TextColor, COLORREF BackGroundColor, LPCWSTR text, INT_PTR x, INT_PTR y)
+void DrawTextAZX(HDC hdc, COLORREF TextColor, COLORREF BackGroundColor, LPCSTR text, INT_PTR x, INT_PTR y)
 { // 更方便的绘画文字
     // for (int i = 0; text[i]; i++) TextLong++;
     COLORREF LastTextColor = SetTextColor(hdc, TextColor);
     COLORREF LastBackGroundColor = SetBkColor(hdc, BackGroundColor);
-    // TextOutW 需要 int 长度参数，显式转换以消除 C4244 警告
-    TextOutW(hdc, (int)x, (int)y, text, wcslen(text));
+    // TextOutA 需要 int 长度参数，显式转换以消除 C4244 警告
+    TextOutA(hdc, (int)x, (int)y, text, strlen(text));
     SetTextColor(hdc, LastTextColor);
     SetBkColor(hdc, LastBackGroundColor);
 }
@@ -51,7 +51,7 @@ void RectGoToNew(RECT NewRect)
 }
 void DrawMouseLine(HDC hdc)
 {                                                   // 绘制定位鼠标线
-    HPEN hPen = CreatePen(PS_SOLID, 2, Colorful);   // 彩色边框
+    HPEN hPen = CreatePen(PS_SOLID, 2, RGB(0, 255, 0));   // 固定绿色边框
     HBRUSH hBrush = CreateSolidBrush(RGB(0, 0, 0)); // 透明填充
     HGDIOBJ hOldPen = SelectObject(hdc, hPen);
     HGDIOBJ hOldBrush = SelectObject(hdc, hBrush);
