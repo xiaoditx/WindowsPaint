@@ -1,5 +1,5 @@
 /*
-    Õâ¶Î´úÂëÖ¼ÔÚ´´½¨È«¾Ö±äÁ¿ÒÔ·½±ãÊ¹ÓÃ
+    è¿™æ®µä»£ç æ—¨åœ¨åˆ›å»ºå…¨å±€å˜é‡ä»¥æ–¹ä¾¿ä½¿ç”¨
 */
 
 #pragma once
@@ -7,29 +7,31 @@
 #define KEY_DOWN(VK_NONAME) ((GetAsyncKeyState(VK_NONAME) & 0x8000) ? 1 : 0)
 const int N = 1e6 + 10;
 #define MAX_LOADSTRING 100
-// È«¾Ö±äÁ¿:
-struct DoKeyDown {
+// å…¨å±€å˜é‡:
+struct DoKeyDown
+{
     int Down_Key[26], TickDownNum;
     int Downx, Downy;
-}DoKeyThing[N];//°´¼üÂ¼ÖÆ
-HINSTANCE hInst;                                // µ±Ç°ÊµÀı
-WCHAR szTitle[MAX_LOADSTRING];                  // ±êÌâÀ¸ÎÄ±¾
-WCHAR szWindowClass[MAX_LOADSTRING];            // Ö÷´°¿ÚÀàÃû
-HWND  hWnd;                                     // HWND
-POINT MousePos;                                 // Êó±êÎ»ÖÃ
-bool  CNC = false;                                // ²»ÄÜµã
-bool  CWT = true;                                 // ´°¿ÚÃûÏÔÊ¾
-bool  CWR = true;                               // Êó±ê´°¿Ú±ß¿ò
-bool  DML = true;                               // ¶¨Î»Êó±êÏß
-bool  VPR = false;                              // Â¼ÖÆÄ£Ê½
-bool  SKV = false, DKV = false;                 // Â¼ÖÆ¼üÅÌÄ£Ê½
-bool  IsKeyDown[256];                           // ·ÀÖ¹ÖØ¸´ÅĞ¶¨
-HWND  MouseHwnd;                                // Êó±êËùÔÚ´°¿ÚµÄHWND
-wchar_t  title[1024];                           // ËùÔÚ´°¿ÚµÄ±êÌâ
-INT_PTR ColorTime;                              // Ê±¼ä
+} DoKeyThing[N];                     // æŒ‰é”®å½•åˆ¶
+HINSTANCE hInst;                     // å½“å‰å®ä¾‹
+WCHAR szTitle[MAX_LOADSTRING];       // æ ‡é¢˜æ æ–‡æœ¬
+WCHAR szWindowClass[MAX_LOADSTRING]; // ä¸»çª—å£ç±»å
+HWND hWnd;                           // HWND
+POINT MousePos;                      // é¼ æ ‡ä½ç½®
+bool CNC = false;                    // ä¸èƒ½ç‚¹
+bool CWT = true;                     // çª—å£åæ˜¾ç¤º
+bool CWR = true;                     // é¼ æ ‡çª—å£è¾¹æ¡†
+bool DML = true;                     // å®šä½é¼ æ ‡çº¿
+bool VPR = false;                    // å½•åˆ¶æ¨¡å¼
+bool SKV = false, DKV = false;       // å½•åˆ¶é”®ç›˜æ¨¡å¼
+bool IsKeyDown[256];                 // é˜²æ­¢é‡å¤åˆ¤å®š
+HWND MouseHwnd;                      // é¼ æ ‡æ‰€åœ¨çª—å£çš„HWND
+wchar_t title[1024];                 // æ‰€åœ¨çª—å£çš„æ ‡é¢˜
+INT_PTR ColorTime;                   // æ—¶é—´
 COLORREF Colorful;
-RECT  MouseWindowRect;                          // Êó±ê´°¿Ú±ß¿ò
-RECT NowRect;                                   // ÏÔÊ¾±ß¿ò
-POINT FastMouse[256]; INT_PTR FMP, VKN;         // Á¬µãÆ÷ºÍ¼üÅÌÂ¼ÖÆ
+RECT MouseWindowRect; // é¼ æ ‡çª—å£è¾¹æ¡†
+RECT NowRect;         // æ˜¾ç¤ºè¾¹æ¡†
+POINT FastMouse[256];
+INT_PTR FMP, VKN; // è¿ç‚¹å™¨å’Œé”®ç›˜å½•åˆ¶
 LONG width = 1280, height = 720;
-LONG Bottom, Top, Left, Right, b1;              // ÕâÀïÊÇÒ»Ğ©ÁÙÊ±µÄ±äÁ¿
+LONG Bottom, Top, Left, Right, b1; // è¿™é‡Œæ˜¯ä¸€äº›ä¸´æ—¶çš„å˜é‡

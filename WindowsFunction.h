@@ -1,5 +1,5 @@
 /*
-    Õâ¶Î´úÂëÖ¼ÔÚ´´½¨´°¿Ú²¢¶¨ÒåÑùÊ½
+    è¿™æ®µä»£ç æ—¨åœ¨åˆ›å»ºçª—å£å¹¶å®šä¹‰æ ·å¼
 */
 #pragma once
 #include "framework.h"
@@ -15,9 +15,9 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 //
-//  º¯Êý: MyRegisterClass()
+//  å‡½æ•°: MyRegisterClass()
 //
-//  Ä¿±ê: ×¢²á´°¿ÚÀà¡£
+//  ç›®æ ‡: æ³¨å†Œçª—å£ç±»ã€‚
 //
 ATOM MyRegisterClass(HINSTANCE hInstance)
 {
@@ -41,42 +41,42 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 }
 
 //
-//   º¯Êý: InitInstance(HINSTANCE, int)
+//   å‡½æ•°: InitInstance(HINSTANCE, int)
 //
-//   Ä¿±ê: ±£´æÊµÀý¾ä±ú²¢´´½¨Ö÷´°¿Ú
+//   ç›®æ ‡: ä¿å­˜å®žä¾‹å¥æŸ„å¹¶åˆ›å»ºä¸»çª—å£
 //
-//   ×¢ÊÍ:
+//   æ³¨é‡Š:
 //
-//        ÔÚ´Ëº¯ÊýÖÐ£¬ÎÒÃÇÔÚÈ«¾Ö±äÁ¿ÖÐ±£´æÊµÀý¾ä±ú²¢
-//        ´´½¨ºÍÏÔÊ¾Ö÷³ÌÐò´°¿Ú¡£
+//        åœ¨æ­¤å‡½æ•°ä¸­ï¼Œæˆ‘ä»¬åœ¨å…¨å±€å˜é‡ä¸­ä¿å­˜å®žä¾‹å¥æŸ„å¹¶
+//        åˆ›å»ºå’Œæ˜¾ç¤ºä¸»ç¨‹åºçª—å£ã€‚
 //
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
-    hInst = hInstance; // ½«ÊµÀý¾ä±ú´æ´¢ÔÚÈ«¾Ö±äÁ¿ÖÐ
+    hInst = hInstance; // å°†å®žä¾‹å¥æŸ„å­˜å‚¨åœ¨å…¨å±€å˜é‡ä¸­
 
     hWnd = CreateWindowExW(WS_EX_LAYERED, szWindowClass, szTitle, WS_POPUP,
-        CW_USEDEFAULT, CW_USEDEFAULT, 1920, 1080, NULL, NULL, hInstance, NULL);
+                           CW_USEDEFAULT, CW_USEDEFAULT, 1920, 1080, NULL, NULL, hInstance, NULL);
 
     if (!hWnd)
     {
         return FALSE;
     }
 
-    SetLayeredWindowAttributes(hWnd, RGB(0, 0, 0), (BYTE)0, LWA_COLORKEY);//ÉèÖÃºÚÉ«Í¸Ã÷É«
-    // È¥³ý±êÌâÀ¸
+    SetLayeredWindowAttributes(hWnd, RGB(0, 0, 0), (BYTE)0, LWA_COLORKEY); // è®¾ç½®é»‘è‰²é€æ˜Žè‰²
+    // åŽ»é™¤æ ‡é¢˜æ 
     SetWindowLong(hWnd, GWL_STYLE, GetWindowLong(hWnd, GWL_STYLE) & ~WS_CAPTION);
-    // ¸üÐÂ´°¿ÚÎ»ÖÃºÍ´óÐ¡
+    // æ›´æ–°çª—å£ä½ç½®å’Œå¤§å°
     SetWindowPos(hWnd, NULL, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOZORDER | SWP_FRAMECHANGED);
-    // ´°¿ÚÖÃ¶¥
+    // çª—å£ç½®é¡¶
     SetWindowPos(hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
-    // ÉèÖÃÒ»¸öÃ¿30ºÁÃë´¥·¢Ò»´ÎµÄ¶¨Ê±Æ÷
+    // è®¾ç½®ä¸€ä¸ªæ¯30æ¯«ç§’è§¦å‘ä¸€æ¬¡çš„å®šæ—¶å™¨
     SetTimer(hWnd, 1, 30, NULL);
     ShowWindow(hWnd, nCmdShow);
     UpdateWindow(hWnd);
 
     return TRUE;
 }
-// ¡°¹ØÓÚ¡±¿òµÄÏûÏ¢´¦Àí³ÌÐò¡£
+// â€œå…³äºŽâ€æ¡†çš„æ¶ˆæ¯å¤„ç†ç¨‹åºã€‚
 INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
     UNREFERENCED_PARAMETER(lParam);
@@ -96,13 +96,13 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
     return (INT_PTR)FALSE;
 }
 //
-//  º¯Êý: WndProc(HWND, UINT, WPARAM, LPARAM)
+//  å‡½æ•°: WndProc(HWND, UINT, WPARAM, LPARAM)
 //
-//  Ä¿±ê: ´¦ÀíÖ÷´°¿ÚµÄÏûÏ¢¡£
+//  ç›®æ ‡: å¤„ç†ä¸»çª—å£çš„æ¶ˆæ¯ã€‚
 //
-//  WM_COMMAND  - ´¦ÀíÓ¦ÓÃ³ÌÐò²Ëµ¥
-//  WM_PAINT    - »æÖÆÖ÷´°¿Ú
-//  WM_DESTROY  - ·¢ËÍÍË³öÏûÏ¢²¢·µ»Ø
+//  WM_COMMAND  - å¤„ç†åº”ç”¨ç¨‹åºèœå•
+//  WM_PAINT    - ç»˜åˆ¶ä¸»çª—å£
+//  WM_DESTROY  - å‘é€é€€å‡ºæ¶ˆæ¯å¹¶è¿”å›ž
 //
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -112,7 +112,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_COMMAND:
     {
         int wmId = LOWORD(wParam);
-        // ·ÖÎö²Ëµ¥Ñ¡Ôñ:
+        // åˆ†æžèœå•é€‰æ‹©:
         switch (wmId)
         {
         case IDM_ABOUT:
@@ -128,7 +128,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     break;
     case WM_PAINT:
         Paint();
-    break;
+        break;
     case WM_DESTROY:
         PostQuitMessage(0);
         break;

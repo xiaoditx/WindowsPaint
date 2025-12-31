@@ -1,5 +1,5 @@
 /*
-    Õâ¶Î´úÂëÖ¼ÔÚ´´½¨º¯ÊıÓÃÒÔ·½±ãÊ¹ÓÃ
+    è¿™æ®µä»£ç æ—¨åœ¨åˆ›å»ºå‡½æ•°ç”¨ä»¥æ–¹ä¾¿ä½¿ç”¨
 */
 
 #pragma once
@@ -8,24 +8,27 @@
 #include <graphics.h>
 #include "Variable.h"
 
-void NFT(LONG* Old, LONG ToNew, double Tnum) {//Ê¹Ò»¸ö±äÁ¿Æ½»¬¹ı¶Éµ½ÁíÒ»¸ö
+void NFT(LONG *Old, LONG ToNew, double Tnum)
+{ // ä½¿ä¸€ä¸ªå˜é‡å¹³æ»‘è¿‡æ¸¡åˆ°å¦ä¸€ä¸ª
     *Old = *Old + (LONG)((ToNew - *Old) * Tnum);
     return;
 }
 
-void DrawTextAZX(HDC hdc, COLORREF TextColor, COLORREF BackGroundColor, LPCWSTR text, INT_PTR x, INT_PTR y) {//¸ü·½±ãµÄ»æ»­ÎÄ×Ö
-    //for (int i = 0; text[i]; i++) TextLong++;
+void DrawTextAZX(HDC hdc, COLORREF TextColor, COLORREF BackGroundColor, LPCWSTR text, INT_PTR x, INT_PTR y)
+{ // æ›´æ–¹ä¾¿çš„ç»˜ç”»æ–‡å­—
+    // for (int i = 0; text[i]; i++) TextLong++;
     COLORREF LastTextColor = SetTextColor(hdc, TextColor);
     COLORREF LastBackGroundColor = SetBkColor(hdc, BackGroundColor);
-    // TextOutW ĞèÒª int ³¤¶È²ÎÊı£¬ÏÔÊ½×ª»»ÒÔÏû³ı C4244 ¾¯¸æ
+    // TextOutW éœ€è¦ int é•¿åº¦å‚æ•°ï¼Œæ˜¾å¼è½¬æ¢ä»¥æ¶ˆé™¤ C4244 è­¦å‘Š
     TextOutW(hdc, (int)x, (int)y, text, wcslen(text));
     SetTextColor(hdc, LastTextColor);
     SetBkColor(hdc, LastBackGroundColor);
 }
 
-void DrawRect(HDC hdc, RECT Rect) {//»­Ò»¸ö²ÊÉ«±ß¿ò
-    HPEN hPen = CreatePen(PS_SOLID, 2, Colorful); // ²ÊÉ«±ß¿ò
-    HBRUSH hBrush = CreateSolidBrush(RGB(0, 0, 0)); // Í¸Ã÷Ìî³ä
+void DrawRect(HDC hdc, RECT Rect)
+{                                                   // ç”»ä¸€ä¸ªå½©è‰²è¾¹æ¡†
+    HPEN hPen = CreatePen(PS_SOLID, 2, Colorful);   // å½©è‰²è¾¹æ¡†
+    HBRUSH hBrush = CreateSolidBrush(RGB(0, 0, 0)); // é€æ˜å¡«å……
     HGDIOBJ hOldPen = SelectObject(hdc, hPen);
     HGDIOBJ hOldBrush = SelectObject(hdc, hBrush);
 
@@ -38,16 +41,18 @@ void DrawRect(HDC hdc, RECT Rect) {//»­Ò»¸ö²ÊÉ«±ß¿ò
     DeleteObject(hBrush);
     return;
 }
-void RectGoToNew(RECT NewRect) {//¸üĞÂ´°¿Ú±ß¿ò
+void RectGoToNew(RECT NewRect)
+{ // æ›´æ–°çª—å£è¾¹æ¡†
     NFT(&NowRect.bottom, NewRect.bottom, (double)0.5);
     NFT(&NowRect.top, NewRect.top, (double)0.5);
     NFT(&NowRect.left, NewRect.left, (double)0.5);
     NFT(&NowRect.right, NewRect.right, (double)0.5);
     return;
 }
-void DrawMouseLine(HDC hdc) {//»æÖÆ¶¨Î»Êó±êÏß
-    HPEN hPen = CreatePen(PS_SOLID, 2, Colorful); // ²ÊÉ«±ß¿ò
-    HBRUSH hBrush = CreateSolidBrush(RGB(0, 0, 0)); // Í¸Ã÷Ìî³ä
+void DrawMouseLine(HDC hdc)
+{                                                   // ç»˜åˆ¶å®šä½é¼ æ ‡çº¿
+    HPEN hPen = CreatePen(PS_SOLID, 2, Colorful);   // å½©è‰²è¾¹æ¡†
+    HBRUSH hBrush = CreateSolidBrush(RGB(0, 0, 0)); // é€æ˜å¡«å……
     HGDIOBJ hOldPen = SelectObject(hdc, hPen);
     HGDIOBJ hOldBrush = SelectObject(hdc, hBrush);
 
@@ -67,9 +72,10 @@ void DrawMouseLine(HDC hdc) {//»æÖÆ¶¨Î»Êó±êÏß
     DeleteObject(hBrush);
     return;
 }
-void FastMousePos(HDC hdc, POINT point) {//½ûÖ¹Êó±êµã»÷
-    HPEN hPen = CreatePen(PS_SOLID, 2, Colorful); // ²ÊÉ«±ß¿ò
-    HBRUSH hBrush = CreateSolidBrush(RGB(0, 0, 0)); // Í¸Ã÷Ìî³ä
+void FastMousePos(HDC hdc, POINT point)
+{                                                   // ç¦æ­¢é¼ æ ‡ç‚¹å‡»
+    HPEN hPen = CreatePen(PS_SOLID, 2, Colorful);   // å½©è‰²è¾¹æ¡†
+    HBRUSH hBrush = CreateSolidBrush(RGB(0, 0, 0)); // é€æ˜å¡«å……
     HGDIOBJ hOldPen = SelectObject(hdc, hPen);
     HGDIOBJ hOldBrush = SelectObject(hdc, hBrush);
 
@@ -90,19 +96,22 @@ void FastMousePos(HDC hdc, POINT point) {//½ûÖ¹Êó±êµã»÷
     return;
 }
 
-void SimulateLeftClick(int x, int y, bool leftorright) {//false left/true rightÄ£ÄâÊó±êµã»÷
-    // ÉèÖÃÊó±êÎ»ÖÃ
+void SimulateLeftClick(int x, int y, bool leftorright)
+{ // false left/true rightæ¨¡æ‹Ÿé¼ æ ‡ç‚¹å‡»
+    // è®¾ç½®é¼ æ ‡ä½ç½®
     SetCursorPos(x, y);
-    if (!leftorright) {
+    if (!leftorright)
+    {
         mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
         mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
     }
-    else {
+    else
+    {
         mouse_event(MOUSEEVENTF_RIGHTDOWN, 0, 0, 0, 0);
         mouse_event(MOUSEEVENTF_RIGHTUP, 0, 0, 0, 0);
     }
 }
-/*²âÊÔÄÚÈİ
+/*æµ‹è¯•å†…å®¹
 void AddKeyThing() {
     bool tmp = true;
     for (int i = 1; i <= 255; i++) {
@@ -124,7 +133,7 @@ void DoKeyThings() {
             //if (Thing == MOUSEEVENTF_LEFTDOWN || Thing == MOUSEEVENTF_LEFTUP || Thing == MOUSEEVENTF_RIGHTDOWN || Thing == MOUSEEVENTF_RIGHTUP) {
             //    mouse_event(Thing, 0, 0, 0, 0);
             //}
-            //else 
+            //else
                 keybd_event(Thing, 0, 0, 0);
         }
     }

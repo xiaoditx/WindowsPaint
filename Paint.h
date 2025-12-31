@@ -1,33 +1,36 @@
 /*
-    Õâ¶Î´úÂëÖ¼ÔÚ»æ»­Ã¿Ò»Ö¡µÄÍ¼Ïñ
+    è¿™æ®µä»£ç æ—¨åœ¨ç»˜ç”»æ¯ä¸€å¸§çš„å›¾åƒ
 */
 #pragma once
-void Paint() {
+void Paint()
+{
     PAINTSTRUCT ps;
     HDC hdc = BeginPaint(hWnd, &ps);
 
     width = GetSystemMetrics(SM_CXSCREEN);
     height = GetSystemMetrics(SM_CYSCREEN);
 
-    // 2. ´´½¨¼æÈİ»º³åÇø
+    // 2. åˆ›å»ºå…¼å®¹ç¼“å†²åŒº
     HDC mdc = CreateCompatibleDC(hdc);
-    if (!mdc) return;
+    if (!mdc)
+        return;
 
     HBITMAP bmp = CreateCompatibleBitmap(hdc, width, height);
 
     HGDIOBJ hOldSel = SelectObject(mdc, bmp);
 
-    // 4. ´´½¨»æÍ¼×ÊÔ´
+    // 4. åˆ›å»ºç»˜å›¾èµ„æº
     HPEN hPen = CreatePen(PS_SOLID, 2, RGB(0, 0, 0));
     HBRUSH hBrush = CreateSolidBrush(Colorful);
 
-    // ±£´æ¾É¶ÔÏó²¢Ñ¡ÈëĞÂµÄ
+    // ä¿å­˜æ—§å¯¹è±¡å¹¶é€‰å…¥æ–°çš„
     HGDIOBJ hOldPen = SelectObject(mdc, hPen);
     HGDIOBJ hOldBrush = SelectObject(mdc, hBrush);
 
-    // 5. »æÖÆÍ¼ĞÎ
+    // 5. ç»˜åˆ¶å›¾å½¢
     RectGoToNew(MouseWindowRect);
-    if (VPR) {
+    if (VPR)
+    {
         hBrush = CreateSolidBrush(RGB(0, 177, 64));
         SelectObject(mdc, hBrush);
 
@@ -35,26 +38,32 @@ void Paint() {
 
         hBrush = CreateSolidBrush(Colorful);
     }
-    if (CWR) DrawRect(mdc, NowRect);
-    if (CNC) Rectangle(mdc, MousePos.x - 5, MousePos.y - 5, MousePos.x + 5, MousePos.y + 5);
-    if (CWT) DrawTextAZX(mdc, Colorful, RGB(0, 0, 0), title, MousePos.x + 5, MousePos.y + 5);
-    if (DML) DrawMouseLine(mdc);
-    if (SKV) DrawTextAZX(mdc, Colorful, RGB(0, 0, 0), L"ÕıÔÚÂ¼ÖÆ¼üÅÌ", MousePos.x + 5, MousePos.y - 5);
-    for (int i = 0; i < FMP; i++) FastMousePos(mdc, FastMouse[i]);
+    if (CWR)
+        DrawRect(mdc, NowRect);
+    if (CNC)
+        Rectangle(mdc, MousePos.x - 5, MousePos.y - 5, MousePos.x + 5, MousePos.y + 5);
+    if (CWT)
+        DrawTextAZX(mdc, Colorful, RGB(0, 0, 0), title, MousePos.x + 5, MousePos.y + 5);
+    if (DML)
+        DrawMouseLine(mdc);
+    if (SKV)
+        DrawTextAZX(mdc, Colorful, RGB(0, 0, 0), L"æ­£åœ¨å½•åˆ¶é”®ç›˜", MousePos.x + 5, MousePos.y - 5);
+    for (int i = 0; i < FMP; i++)
+        FastMousePos(mdc, FastMouse[i]);
 
-    // 6. »Ö¸´¾É¶ÔÏó²¢É¾³ı×ÊÔ´
+    // 6. æ¢å¤æ—§å¯¹è±¡å¹¶åˆ é™¤èµ„æº
     SelectObject(mdc, hOldBrush);
     SelectObject(mdc, hOldPen);
-    DeleteObject(hBrush);      // É¾³ı±ÊË¢
-    DeleteObject(hPen);        // É¾³ı»­±Ê
+    DeleteObject(hBrush); // åˆ é™¤ç¬”åˆ·
+    DeleteObject(hPen);   // åˆ é™¤ç”»ç¬”
 
-    // 7. ¸´ÖÆµ½ÆÁÄ»
+    // 7. å¤åˆ¶åˆ°å±å¹•
     BitBlt(hdc, 0, 0, width, height, mdc, 0, 0, SRCCOPY);
 
-    // 8. ÇåÀíÄÚ´æDC
-    SelectObject(mdc, hOldSel);  // »Ö¸´Ô­À´µÄÎ»Í¼
-    DeleteObject(bmp);           // É¾³ıÎ»Í¼
-    DeleteDC(mdc);               // É¾³ıÄÚ´æDC
+    // 8. æ¸…ç†å†…å­˜DC
+    SelectObject(mdc, hOldSel); // æ¢å¤åŸæ¥çš„ä½å›¾
+    DeleteObject(bmp);          // åˆ é™¤ä½å›¾
+    DeleteDC(mdc);              // åˆ é™¤å†…å­˜DC
 
     EndPaint(hWnd, &ps);
 }

@@ -1,9 +1,10 @@
 /*
-    ’‚∂Œ¥˙¬Î÷º‘⁄¥¶¿Ì√ø“ª÷°µƒ ˝æ›
+    ËøôÊÆµ‰ª£Á†ÅÊó®Âú®Â§ÑÁêÜÊØè‰∏ÄÂ∏ßÁöÑÊï∞ÊçÆ
 */
 #pragma once
-void Tick() {
-    InvalidateRect(hWnd, NULL, TRUE); //  π’˚∏ˆ¥∞ø⁄Œﬁ–ß,¥”∂¯¥•∑¢ªÊª≠
+void Tick()
+{
+    InvalidateRect(hWnd, NULL, TRUE); // ‰ΩøÊï¥‰∏™Á™óÂè£Êó†Êïà,‰ªéËÄåËß¶ÂèëÁªòÁîª
 
     GetCursorPos(&MousePos);
     ColorTime += 3;
@@ -11,85 +12,105 @@ void Tick() {
     Colorful = HSLtoRGB(ColorTime, 1, 0.5f);
     MouseHwnd = WindowFromPoint(MousePos);
     GetWindowTextW(MouseHwnd, title, 512);
-    GetWindowRect(MouseHwnd, &MouseWindowRect);//ªÒ»°π¶ƒ‹œ‡πÿ ˝æ›
+    GetWindowRect(MouseHwnd, &MouseWindowRect); // Ëé∑ÂèñÂäüËÉΩÁõ∏ÂÖ≥Êï∞ÊçÆ
 
-    if (!IsKeyDown[VK_MENU] && !IsKeyDown[VK_F2] && KEY_DOWN(VK_MENU) && KEY_DOWN(VK_F2)) {//Alt+F2»°œ˚/÷ÿ∆Ù
+    if (!IsKeyDown[VK_MENU] && !IsKeyDown[VK_F2] && KEY_DOWN(VK_MENU) && KEY_DOWN(VK_F2))
+    { // Alt+F2ÂèñÊ∂à/ÈáçÂêØ
         IsKeyDown[VK_MENU] = IsKeyDown[VK_F2] = true;
         CNC = (bool)((CNC + 1) % 2);
     }
-    else if (IsKeyDown[VK_MENU] && IsKeyDown[VK_F2] && !KEY_DOWN(VK_MENU) && !KEY_DOWN(VK_F2)) {
-        IsKeyDown[VK_MENU] = IsKeyDown[VK_F2] = false;//∑¿÷π∂‡¥Œ≈–∂œ
+    else if (IsKeyDown[VK_MENU] && IsKeyDown[VK_F2] && !KEY_DOWN(VK_MENU) && !KEY_DOWN(VK_F2))
+    {
+        IsKeyDown[VK_MENU] = IsKeyDown[VK_F2] = false; // Èò≤Ê≠¢Â§öÊ¨°Âà§Êñ≠
     }
 
-    if (!IsKeyDown[VK_MENU] && !IsKeyDown[0x57] && KEY_DOWN(VK_MENU) && KEY_DOWN(0x57)) {//Alt+W»°œ˚/÷ÿ∆Ù
+    if (!IsKeyDown[VK_MENU] && !IsKeyDown[0x57] && KEY_DOWN(VK_MENU) && KEY_DOWN(0x57))
+    { // Alt+WÂèñÊ∂à/ÈáçÂêØ
         IsKeyDown[VK_MENU] = IsKeyDown[0x57] = true;
         CWT = (bool)((CWT + 1) % 2);
     }
-    else if (IsKeyDown[VK_MENU] && IsKeyDown[0x57] && !KEY_DOWN(VK_MENU) && !KEY_DOWN(0x57)) {
-        IsKeyDown[VK_MENU] = IsKeyDown[0x57] = false;//∑¿÷π∂‡¥Œ≈–∂œ
+    else if (IsKeyDown[VK_MENU] && IsKeyDown[0x57] && !KEY_DOWN(VK_MENU) && !KEY_DOWN(0x57))
+    {
+        IsKeyDown[VK_MENU] = IsKeyDown[0x57] = false; // Èò≤Ê≠¢Â§öÊ¨°Âà§Êñ≠
     }
 
-    if (!IsKeyDown[VK_MENU] && !IsKeyDown[0x52] && KEY_DOWN(VK_MENU) && KEY_DOWN(0x52)) {//Alt+R»°œ˚/÷ÿ∆Ù
+    if (!IsKeyDown[VK_MENU] && !IsKeyDown[0x52] && KEY_DOWN(VK_MENU) && KEY_DOWN(0x52))
+    { // Alt+RÂèñÊ∂à/ÈáçÂêØ
         IsKeyDown[VK_MENU] = IsKeyDown[0x52] = true;
         CWR = (bool)((CWR + 1) % 2);
     }
-    else if (IsKeyDown[VK_MENU] && IsKeyDown[0x52] && !KEY_DOWN(VK_MENU) && !KEY_DOWN(0x52)) {
-        IsKeyDown[VK_MENU] = IsKeyDown[0x52] = false;//∑¿÷π∂‡¥Œ≈–∂œ
+    else if (IsKeyDown[VK_MENU] && IsKeyDown[0x52] && !KEY_DOWN(VK_MENU) && !KEY_DOWN(0x52))
+    {
+        IsKeyDown[VK_MENU] = IsKeyDown[0x52] = false; // Èò≤Ê≠¢Â§öÊ¨°Âà§Êñ≠
     }
 
-    if (!IsKeyDown[VK_MENU] && !IsKeyDown[0x4C] && KEY_DOWN(VK_MENU) && KEY_DOWN(0x4C)) {//Alt+L»°œ˚/÷ÿ∆Ù
+    if (!IsKeyDown[VK_MENU] && !IsKeyDown[0x4C] && KEY_DOWN(VK_MENU) && KEY_DOWN(0x4C))
+    { // Alt+LÂèñÊ∂à/ÈáçÂêØ
         IsKeyDown[VK_MENU] = IsKeyDown[0x4C] = true;
         DML = (bool)((DML + 1) % 2);
     }
-    else if (IsKeyDown[VK_MENU] && IsKeyDown[0x4C] && !KEY_DOWN(VK_MENU) && !KEY_DOWN(0x4C)) {
-        IsKeyDown[VK_MENU] = IsKeyDown[0x4C] = false;//∑¿÷π∂‡¥Œ≈–∂œ
+    else if (IsKeyDown[VK_MENU] && IsKeyDown[0x4C] && !KEY_DOWN(VK_MENU) && !KEY_DOWN(0x4C))
+    {
+        IsKeyDown[VK_MENU] = IsKeyDown[0x4C] = false; // Èò≤Ê≠¢Â§öÊ¨°Âà§Êñ≠
     }
 
-    if (!IsKeyDown[VK_MENU] && !IsKeyDown[VK_OEM_4] && KEY_DOWN(VK_MENU) && KEY_DOWN(VK_OEM_4)) {//Alt+[»°œ˚/÷ÿ∆Ù
+    if (!IsKeyDown[VK_MENU] && !IsKeyDown[VK_OEM_4] && KEY_DOWN(VK_MENU) && KEY_DOWN(VK_OEM_4))
+    { // Alt+[ÂèñÊ∂à/ÈáçÂêØ
         IsKeyDown[VK_MENU] = IsKeyDown[VK_OEM_4] = true;
         FastMouse[FMP++] = MousePos;
     }
-    else if (IsKeyDown[VK_MENU] && IsKeyDown[VK_OEM_4] && !KEY_DOWN(VK_MENU) && !KEY_DOWN(VK_OEM_4)) {
-        IsKeyDown[VK_MENU] = IsKeyDown[VK_OEM_4] = false;//∑¿÷π∂‡¥Œ≈–∂œ
+    else if (IsKeyDown[VK_MENU] && IsKeyDown[VK_OEM_4] && !KEY_DOWN(VK_MENU) && !KEY_DOWN(VK_OEM_4))
+    {
+        IsKeyDown[VK_MENU] = IsKeyDown[VK_OEM_4] = false; // Èò≤Ê≠¢Â§öÊ¨°Âà§Êñ≠
     }
 
-    if (!IsKeyDown[VK_MENU] && !IsKeyDown[0x50] && KEY_DOWN(VK_MENU) && KEY_DOWN(0x50)) {//Alt+P»°œ˚/÷ÿ∆Ù
+    if (!IsKeyDown[VK_MENU] && !IsKeyDown[0x50] && KEY_DOWN(VK_MENU) && KEY_DOWN(0x50))
+    { // Alt+PÂèñÊ∂à/ÈáçÂêØ
         IsKeyDown[VK_MENU] = IsKeyDown[0x50] = true;
         VPR = (bool)((VPR + 1) % 2);
     }
-    else if (IsKeyDown[VK_MENU] && IsKeyDown[0x50] && !KEY_DOWN(VK_MENU) && !KEY_DOWN(0x50)) {
-        IsKeyDown[VK_MENU] = IsKeyDown[0x50] = false;//∑¿÷π∂‡¥Œ≈–∂œ
+    else if (IsKeyDown[VK_MENU] && IsKeyDown[0x50] && !KEY_DOWN(VK_MENU) && !KEY_DOWN(0x50))
+    {
+        IsKeyDown[VK_MENU] = IsKeyDown[0x50] = false; // Èò≤Ê≠¢Â§öÊ¨°Âà§Êñ≠
     }
 
-    if (KEY_DOWN(VK_MENU) && KEY_DOWN(VK_OEM_6)) FMP = 0;//Alt+]«Â≥˝
+    if (KEY_DOWN(VK_MENU) && KEY_DOWN(VK_OEM_6))
+        FMP = 0; // Alt+]Ê∏ÖÈô§
 
-    if (KEY_DOWN(VK_MENU) && KEY_DOWN(VK_OEM_COMMA)) {
-        for (int i = 0; i < FMP; i++) {
-            SimulateLeftClick(FastMouse[i].x, FastMouse[i].y, false);//Alt+<◊Ûº¸ ¡¨µ„
+    if (KEY_DOWN(VK_MENU) && KEY_DOWN(VK_OEM_COMMA))
+    {
+        for (int i = 0; i < FMP; i++)
+        {
+            SimulateLeftClick(FastMouse[i].x, FastMouse[i].y, false); // Alt+<Â∑¶ÈîÆ ËøûÁÇπ
         }
     }
 
-    if (KEY_DOWN(VK_MENU) && KEY_DOWN(VK_OEM_PERIOD)) {
-        for (int i = 0; i < FMP; i++) {
-            SimulateLeftClick(FastMouse[i].x, FastMouse[i].y, true);//Alt+>”“º¸ ¡¨µ„”“º¸
+    if (KEY_DOWN(VK_MENU) && KEY_DOWN(VK_OEM_PERIOD))
+    {
+        for (int i = 0; i < FMP; i++)
+        {
+            SimulateLeftClick(FastMouse[i].x, FastMouse[i].y, true); // Alt+>Âè≥ÈîÆ ËøûÁÇπÂè≥ÈîÆ
         }
     }
 
-    if (KEY_DOWN(VK_LBUTTON)) {
+    if (KEY_DOWN(VK_LBUTTON))
+    {
         NFT(&Bottom, (LONG)0, (double)0.3);
         NFT(&Top, width, (double)0.3);
         NFT(&Left, (LONG)0, (double)0.3);
         NFT(&Right, height, (double)0.3);
         NFT(&b1, 10, (double)0.2);
     }
-    else if (KEY_DOWN(VK_RBUTTON)) {
+    else if (KEY_DOWN(VK_RBUTTON))
+    {
         NFT(&Bottom, width, (double)0.3);
         NFT(&Top, (LONG)0, (double)0.3);
         NFT(&Left, height, (double)0.3);
         NFT(&Right, (LONG)0, (double)0.3);
         NFT(&b1, -10, (double)0.2);
     }
-    else {
+    else
+    {
         NFT(&Bottom, MousePos.x, (double)0.5);
         NFT(&Top, MousePos.x, (double)0.5);
         NFT(&Left, MousePos.y, (double)0.5);
@@ -97,7 +118,8 @@ void Tick() {
         NFT(&b1, 0, (double)0.5);
     }
 
-    if (KEY_DOWN(VK_MENU) && KEY_DOWN(VK_ESCAPE)) {
+    if (KEY_DOWN(VK_MENU) && KEY_DOWN(VK_ESCAPE))
+    {
         DestroyWindow(hWnd);
         return;
     }
