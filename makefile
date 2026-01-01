@@ -35,23 +35,27 @@ $(TARGET): $(OBJECTS) $(RES_OBJ)
 	$(CXX) $(LDFLAGS) -o $@ $(OBJECTS) $(RES_OBJ) $(LIBS)
 	@echo "Build successful: $(TARGET)"
 
+# Create build directory if it doesn't exist
+build/:
+	mkdir build
+
 # Compile source files from src directory to build directory
-build/main.o: src/main.cpp
+build/main.o: src/main.cpp | build/
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-build/Function.o: src/Function.cpp
+build/Function.o: src/Function.cpp | build/
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-build/Paint.o: src/Paint.cpp
+build/Paint.o: src/Paint.cpp | build/
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-build/Tick.o: src/Tick.cpp
+build/Tick.o: src/Tick.cpp | build/
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-build/WindowsFunction.o: src/WindowsFunction.cpp
+build/WindowsFunction.o: src/WindowsFunction.cpp | build/
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-build/Variable.o: src/Variable.cpp
+build/Variable.o: src/Variable.cpp | build/
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # Compile resource files
