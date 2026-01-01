@@ -20,10 +20,9 @@ SOURCES = src/main.cpp src/Function.cpp src/Paint.cpp src/Tick.cpp src/WindowsFu
 # Object files (in build directory)
 OBJECTS = $(addprefix build/,$(notdir $(SOURCES:.cpp=.o)))
 
-# Resource files (disabled due to encoding issues - can be re-enabled if needed)
-# RESOURCES = Project1.rc
-# RES_OBJ = $(RESOURCES:.rc=.o)
-RES_OBJ =
+# Resource files
+RESOURCES = resources/Project1.rc
+RES_OBJ = build/Project1.o
 
 # Target executable (in build directory)
 TARGET = build/WindowsPaint.exe
@@ -55,9 +54,9 @@ build/WindowsFunction.o: src/WindowsFunction.cpp
 build/Variable.o: src/Variable.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# Compile resource files (disabled)
-# %.o: %.rc
-# 	$(WINDRES) -i $< -o $@
+# Compile resource files
+build/Project1.o: resources/Project1.rc
+	$(WINDRES) -i $< -I include -o $@
 
 # Clean build artifacts
 clean:
