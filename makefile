@@ -6,7 +6,7 @@ CXX = g++
 WINDRES = windres
 
 # Compiler flags
-CXXFLAGS = -Wall -Wextra -std=c++11 -O2 -Iinclude
+CXXFLAGS = -Wall -Wextra -std=c++17 -O2 -Iinclude
 
 # Linker flags
 LDFLAGS = -mwindows -static-libgcc -static-libstdc++
